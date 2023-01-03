@@ -4,7 +4,9 @@ var nodemailer = require('nodemailer');
 const creds = require('../config/config');
 
 var transport = {
-  host: 'smtp.gmail.com',
+  service : 'Naver',
+  host: 'smtp.naver.com',
+  port: 587,
   auth: {
     user: creds.USER,
     pass: creds.PASS
@@ -28,13 +30,16 @@ router.post('/send', (req, res, next) => {
   var content = `name: ${name} \n email: ${email} \n message: ${content} `
 
   var mail = {
-    from: name,
-    to: 'RECEIVING_EMAIL_ADDRESS_GOES_HERE',  //Change to email address that you want to receive messages on
+    from: creds.USER,
+    to: email,  //Change to email address that you want to receive messages on
     subject: 'New Message from Contact Form',
     text: content
   }
+  console.log("222->", mail);
 
   transporter.sendMail(mail, (err, data) => {
+
+    console.log("111->", err);
     if (err) {
       res.json({
         msg: 'fail'
